@@ -180,16 +180,16 @@ export default function AddItemModal({
         <div className="grid gap-3 mt-2">
           <div>
             <Label className="text-xs uppercase tracking-widest text-muted-foreground">Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Mango Sapling" className="bg-card mt-1" />
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Mango Sapling" className="bg-card mt-1" data-testid="item-name-input" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label className="text-xs uppercase tracking-widest text-muted-foreground">Price ($)</Label>
-              <Input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="24" className="bg-card mt-1" />
+              <Input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="24" className="bg-card mt-1" data-testid="item-price-input" />
             </div>
             <div>
               <Label className="text-xs uppercase tracking-widest text-muted-foreground">Stock</Label>
-              <Input type="number" min="0" value={stock} onChange={(e) => setStock(Number(e.target.value))} className="bg-card mt-1" />
+              <Input type="number" min="0" value={stock} onChange={(e) => setStock(Number(e.target.value))} className="bg-card mt-1" data-testid="item-stock-input" />
             </div>
           </div>
           <div>
@@ -218,6 +218,7 @@ export default function AddItemModal({
             onClick={handleSave}
             disabled={saving || detecting}
             className="flex-1 bg-primary text-primary-foreground rounded-xl py-3 font-medium hover:bg-[#3A5233] disabled:opacity-50"
+            data-testid="save-item-button"
           >
             {saving ? "Saving…" : editingItem ? "Update" : "Add to garden"}
           </button>

@@ -1,7 +1,12 @@
+import os
 from playwright.sync_api import sync_playwright
 import sys
 
 BASE = "http://localhost:4321"
+
+# Start fresh
+if os.path.exists("db.json"):
+    os.remove("db.json")
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
