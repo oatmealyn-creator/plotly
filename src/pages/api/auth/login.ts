@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getDB, saveDB } from "@/lib/db-json";
+import { supabase, createSession } from "@/lib/supabase";
 import bcrypt from "bcryptjs";
 
 export const POST: APIRoute = async ({ request }) => {
@@ -14,8 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const db = getDB();
-    const user = db.users.find((u) => u.email === email);
+    const { data: user } = await supabase.from("users").select("*").eq("email", email).single();
     if (!user) {
       return new Response(JSON.stringify({ detail: "Invalid email or password" }), {
         status: 401,
@@ -23,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const valid = await bcrypt.compare(password, user.password_hash);
+    const valid = await bcrypt.compare(password, (user as any).password_hash);
     if (!valid) {
       return new Response(JSON.stringify({ detail: "Invalid email or password" }), {
         status: 401,
@@ -32,14 +31,13 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const session_id = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-    db.sessions.push({
+    await createSession({
       session_id,
-      user_id: user.user_id,
+      user_id: (user as any).user_id,
       created_at: new Date().toISOString(),
     });
-    saveDB(db);
 
-    const { password_hash: _, ...safeUser } = user;
+    const { password_hash: _, ...safeUser } = user as any;
 
     return new Response(
       JSON.stringify({ user: safeUser, session_id }),

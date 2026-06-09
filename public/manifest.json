@@ -1,0 +1,23 @@
+{
+  "name": "Plotly — Harvest Catalog",
+  "short_name": "Plotly",
+  "description": "A free gardening storefront. List plants, share your store, get orders via WhatsApp.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F6F0",
+  "theme_color": "#2C332A",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

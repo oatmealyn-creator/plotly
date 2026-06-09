@@ -1,6 +1,7 @@
-import type { DBStructure, User, Session } from "@/lib/db-json";
+import type { User } from "@/lib/db-json";
+import { getSessionById, getUserById } from "@/lib/supabase";
 
-export function getSessionUser(req: { headers: { get: (name: string) => string | null } }, db: DBStructure): User | null {
+export async function getSessionUser(req: { headers: { get: (name: string) => string | null } }): Promise<User | null> {
   let sessionId = "";
 
   const authHeader = req.headers.get("authorization") || "";
@@ -18,7 +19,7 @@ export function getSessionUser(req: { headers: { get: (name: string) => string |
 
   if (!sessionId) return null;
 
-  const session = db.sessions.find((s: { session_id: string }) => s.session_id === sessionId);
+  const session = await getSessionById(sessionId);
   if (!session) return null;
-  return db.users.find((u: { user_id: string }) => u.user_id === session.user_id) || null;
+  return getUserById(session.user_id);
 }

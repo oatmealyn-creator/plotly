@@ -199,7 +199,7 @@ export default function Dashboard() {
                           <div className="font-display text-base text-foreground break-words">{item.name}</div>
                           <div className="text-xs text-muted-foreground mt-0.5">Stock: {item.stock}</div>
                         </div>
-                        <div className="font-display text-lg text-primary">${item.price}</div>
+                        <div className="font-display text-lg text-primary">₹{item.price}</div>
                       </div>
                       <div className="flex gap-2 mt-3">
                         <button

@@ -80,7 +80,7 @@ export default function Landing() {
                   <div className="font-display text-lg text-foreground truncate">Mango Sapling</div>
                   <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">Plants</div>
                 </div>
-                <div className="text-2xl font-display text-primary">$24</div>
+                <div className="text-2xl font-display text-primary">₹24</div>
               </div>
             </div>
             <div className="absolute top-6 left-6 bg-accent text-white text-xs uppercase tracking-widest px-3 py-1.5 rounded-full font-bold">

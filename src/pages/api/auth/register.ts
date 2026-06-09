@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getDB, saveDB } from "@/lib/db-json";
+import { supabase, getUserByEmail, createUser, createSession } from "@/lib/supabase";
 import bcrypt from "bcryptjs";
 
 export const POST: APIRoute = async ({ request }) => {
@@ -14,8 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const db = getDB();
-    const existing = db.users.find((u) => u.email === email);
+    const existing = await getUserByEmail(email);
     if (existing) {
       return new Response(JSON.stringify({ detail: "Email already registered" }), {
         status: 409,
@@ -41,16 +40,14 @@ export const POST: APIRoute = async ({ request }) => {
       created_at: new Date().toISOString(),
     };
 
-    db.users.push(user);
-    saveDB(db);
+    await createUser(user);
 
     const session_id = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-    db.sessions.push({
+    await createSession({
       session_id,
       user_id: user.user_id,
       created_at: new Date().toISOString(),
     });
-    saveDB(db);
 
     const { password_hash: _, ...safeUser } = user;
 
@@ -66,7 +63,8 @@ export const POST: APIRoute = async ({ request }) => {
     );
   } catch (err) {
     console.error("Register error:", err);
-    return new Response(JSON.stringify({ detail: "Registration failed" }), {
+    const message = err instanceof Error ? err.message : String(err);
+    return new Response(JSON.stringify({ detail: "Registration failed", error: message }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

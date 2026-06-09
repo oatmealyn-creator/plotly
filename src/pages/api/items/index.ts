@@ -1,10 +1,9 @@
 import type { APIRoute } from "astro";
-import { getDB, saveDB } from "@/lib/db-json";
+import { supabase, getUserItems, createItem } from "@/lib/supabase";
 import { getSessionUser } from "../auth/_session";
 
 export const GET: APIRoute = async ({ request }) => {
-  const db = getDB();
-  const user = getSessionUser(request, db);
+  const user = await getSessionUser(request);
   if (!user) {
     return new Response(JSON.stringify({ detail: "Not authenticated" }), {
       status: 401,
@@ -12,7 +11,7 @@ export const GET: APIRoute = async ({ request }) => {
     });
   }
 
-  const userItems = db.items.filter((item) => item.user_id === user.user_id);
+  const userItems = await getUserItems(user.user_id);
   return new Response(JSON.stringify(userItems), {
     status: 200,
     headers: { "Content-Type": "application/json" },
@@ -20,8 +19,7 @@ export const GET: APIRoute = async ({ request }) => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
-  const db = getDB();
-  const user = getSessionUser(request, db);
+  const user = await getSessionUser(request);
   if (!user) {
     return new Response(JSON.stringify({ detail: "Not authenticated" }), {
       status: 401,
@@ -51,8 +49,7 @@ export const POST: APIRoute = async ({ request }) => {
     created_at: new Date().toISOString(),
   };
 
-  db.items.push(newItem);
-  saveDB(db);
+  await createItem(newItem);
 
   return new Response(JSON.stringify(newItem), {
     status: 201,

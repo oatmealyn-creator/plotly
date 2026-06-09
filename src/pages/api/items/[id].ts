@@ -1,10 +1,9 @@
 import type { APIRoute } from "astro";
-import { getDB, saveDB } from "@/lib/db-json";
+import { supabase, updateItem, deleteItem } from "@/lib/supabase";
 import { getSessionUser } from "../auth/_session";
 
 export const PUT: APIRoute = async ({ request, params }) => {
-  const db = getDB();
-  const user = getSessionUser(request, db);
+  const user = await getSessionUser(request);
   if (!user) {
     return new Response(JSON.stringify({ detail: "Not authenticated" }), {
       status: 401,
@@ -12,7 +11,7 @@ export const PUT: APIRoute = async ({ request, params }) => {
     });
   }
 
-  const item = db.items.find((i) => i.item_id === params.id && i.user_id === user.user_id);
+  const { data: item } = await supabase.from("items").select("*").eq("item_id", params.id).eq("user_id", user.user_id).single();
   if (!item) {
     return new Response(JSON.stringify({ detail: "Item not found" }), {
       status: 404,
@@ -21,23 +20,27 @@ export const PUT: APIRoute = async ({ request, params }) => {
   }
 
   const body = await request.json();
-  if (body.name !== undefined) item.name = body.name;
-  if (body.price !== undefined) item.price = parseFloat(body.price);
-  if (body.category !== undefined) item.category = body.category;
-  if (body.description !== undefined) item.description = body.description;
-  if (body.stock !== undefined) item.stock = parseInt(body.stock, 10) || 0;
-  if (body.image_base64 !== undefined) item.image_base64 = body.image_base64;
+  const updates: Record<string, any> = {};
+  if (body.name !== undefined) updates.name = body.name;
+  if (body.price !== undefined) updates.price = parseFloat(body.price);
+  if (body.category !== undefined) updates.category = body.category;
+  if (body.description !== undefined) updates.description = body.description;
+  if (body.stock !== undefined) updates.stock = parseInt(body.stock, 10) || 0;
+  if (body.image_base64 !== undefined) updates.image_base64 = body.image_base64;
 
-  saveDB(db);
-  return new Response(JSON.stringify(item), {
+  if (Object.keys(updates).length > 0) {
+    await updateItem(params.id!, updates);
+  }
+
+  const merged = { ...item, ...updates } as any;
+  return new Response(JSON.stringify(merged), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });
 };
 
 export const DELETE: APIRoute = async ({ request, params }) => {
-  const db = getDB();
-  const user = getSessionUser(request, db);
+  const user = await getSessionUser(request);
   if (!user) {
     return new Response(JSON.stringify({ detail: "Not authenticated" }), {
       status: 401,
@@ -45,16 +48,15 @@ export const DELETE: APIRoute = async ({ request, params }) => {
     });
   }
 
-  const before = db.items.length;
-  db.items = db.items.filter((i) => !(i.item_id === params.id && i.user_id === user.user_id));
-  if (db.items.length === before) {
+  const { data: item } = await supabase.from("items").select("item_id").eq("item_id", params.id).eq("user_id", user.user_id).single();
+  if (!item) {
     return new Response(JSON.stringify({ detail: "Item not found" }), {
       status: 404,
       headers: { "Content-Type": "application/json" },
     });
   }
 
-  saveDB(db);
+  await deleteItem(params.id!);
   return new Response(JSON.stringify({ success: true }), {
     status: 200,
     headers: { "Content-Type": "application/json" },

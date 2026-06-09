@@ -1,13 +1,12 @@
 import { defineConfig } from "astro/config";
-import vercel from "@astrojs/vercel";
+import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
-import mcp from "astro-mcp";
 
 export default defineConfig({
   output: "server",
-  adapter: vercel(),
-  integrations: [react(), mcp()],
+  adapter: cloudflare({ mode: "advanced" }),
+  integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
   },
