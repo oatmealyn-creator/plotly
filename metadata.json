@@ -1,0 +1,6 @@
+{
+  "name": "Harvest Catalog",
+  "description": "A professional botanical field guide, garden planner, and crop harvesting tracker with yield calculators and growing timelines.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

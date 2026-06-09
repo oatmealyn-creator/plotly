@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Figtree:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Outfit", sans-serif;
+  --font-serif: "Figtree", sans-serif;
+  --font-sans: "Figtree", sans-serif;
+
+  --color-background: hsl(60, 25%, 96%);
+  /* Radix UI overrides */
+  --radius-lg: 0.875rem;
+  --radius-md: calc(0.875rem - 2px);
+  --radius-sm: calc(0.875rem - 4px);
+}
+
+:root {
+  --background: 60 25% 96%;
+  --foreground: 90 8% 18%;
+  --card: 0 0% 100%;
+  --card-foreground: 90 8% 18%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 90 8% 18%;
+  --primary: 95 22% 33%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 50 18% 92%;
+  --secondary-foreground: 90 8% 18%;
+  --muted: 50 18% 92%;
+  --muted-foreground: 90 5% 38%;
+  --accent: 20 45% 57%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 55% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 50 30% 82%;
+  --input: 50 30% 82%;
+  --ring: 95 22% 33%;
+  --radius: 0.875rem;
+}
+
+body {
+  background-color: hsl(60, 25%, 96%);
+  color: hsl(90, 8%, 18%);
+}
