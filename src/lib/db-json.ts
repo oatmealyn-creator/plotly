@@ -38,7 +38,9 @@ export interface DBStructure {
   sessions: Session[];
 }
 
-const DB_PATH = path.join(process.cwd(), "db.json");
+const DB_PATH = process.env.VERCEL
+  ? "/tmp/db.json"
+  : path.join(process.cwd(), "db.json");
 
 function initDB(): DBStructure {
   if (!fs.existsSync(DB_PATH)) {

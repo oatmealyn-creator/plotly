@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Sprout } from "lucide-react";
 import { apiFetch } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
 export default function Login() {
-  const navigate = useNavigate();
   const { setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +28,7 @@ export default function Login() {
       }
       setUser(data.user);
       toast.success("Welcome back!");
-      navigate("/dashboard", { replace: true });
+      window.location.href = "/dashboard";
     } catch (err: any) {
       toast.error(err?.message || "Login failed");
     } finally {

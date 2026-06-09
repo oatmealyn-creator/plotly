@@ -1,30 +1,36 @@
 {
   "users": [
     {
-      "user_id": "user_1781026996690_g5ngpn",
-      "username": "test_70ha",
+      "user_id": "user_1781027441397_iqk5pp",
+      "username": "test_wmjj",
       "email": "test@garden.com",
-      "password_hash": "$2b$10$PalkS6h.s0PQTTbJGtvRge8sxMZ/CV2JB6Woo/mM9/8YZYnsnTh6i",
+      "password_hash": "$2b$10$NprqS4iFMpObfORicw1.1uZdq3cbuEYsOjmHBexHiIn8YmrJP2nL2",
       "name": "Test Gardener",
       "store_name": "Test Gardener's Store",
       "bio": "Backyard gardener. Growing and sharing.",
       "whatsapp_number": "",
       "picture": "",
-      "created_at": "2026-06-09T17:43:16.691Z"
+      "created_at": "2026-06-09T17:50:41.397Z"
     }
   ],
   "items": [
     {
-      "item_id": "item_1781026997754_cnpo",
-      "user_id": "user_1781026996690_g5ngpn",
+      "item_id": "item_1781027442464_xc0b",
+      "user_id": "user_1781027441397_iqk5pp",
       "name": "Mango Sapling",
       "price": 24,
       "category": "Plants",
       "description": "",
       "stock": 5,
       "image_base64": "",
-      "created_at": "2026-06-09T17:43:17.754Z"
+      "created_at": "2026-06-09T17:50:42.464Z"
     }
   ],
-  "sessions": []
+  "sessions": [
+    {
+      "session_id": "sess_1781027443755_fpdj4q38",
+      "user_id": "user_1781027441397_iqk5pp",
+      "created_at": "2026-06-09T17:50:43.755Z"
+    }
+  ]
 }

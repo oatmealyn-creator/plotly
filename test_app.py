@@ -58,15 +58,13 @@ with sync_playwright() as p:
     page.wait_for_load_state("networkidle")
     print(f"[PASS] Logged out, URL: {page.url}")
 
-    # 8. Login again
-    page.locator('a[href="/login"]').click()
-    page.wait_for_load_state("networkidle")
+    # 8. Login again (should already be on /login from redirect)
+    page.wait_for_selector("#email", timeout=5000)
     page.fill("#email", "test@garden.com")
     page.fill("#password", "password123")
     page.locator('button[type="submit"]').click()
-    page.wait_for_load_state("networkidle")
-    assert "/dashboard" in page.url
-    print("[PASS] Logged back in successfully")
+    page.wait_for_url("**/dashboard**", timeout=10000)
+    print(f"[PASS] Logged back in, URL: {page.url}")
 
     # 9. Visit storefront
     storefront_link = page.locator('[data-testid="storefront-link-text"]').text_content()
